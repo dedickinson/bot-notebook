@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
 
+import sys
 import struct
-import smbus
+from periphery import I2C, I2CError
 
-bus = smbus.SMBus(1)
+DEVICE_ADDRESS = 0x15
 
-DEVICE_ADDRESS = 0x04
+try:
+    i2c = I2C("/dev/i2c-1")
+except (FileNotFoundError, I2CError) as e:
+    print (e)
+    sys.exit(1)
 
-def get_float(data, index):
-    bytes = data[4*index:(index+1)*4]
-    return struct.unpack('f', "".join(map(chr, bytes)))[0]
+try:
+    messages = [I2C.Message([1,2,3]), I2C.Message([0x00], read=True)]
+    
+    i2c.transfer(DEVICE_ADDRESS, messages)
+    
+    print(messages[1].data)
 
-data = bus.read_i2c_block_data(DEVICE_ADDRESS, 0)
-print(data)
-print(get_float(data, 0))
-print(get_float(data, 1))
+except (FileNotFoundError, I2CError) as e:
+    print (e)
+    sys.exit(1)
+finally:
+    i2c.close()
+
 

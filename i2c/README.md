@@ -1,5 +1,9 @@
 # i2c
 
+## Issue wrt SMB
+
+See: https://github.com/raspberrypi/firmware/issues/828
+
 ## Resources
 
 * [Adafruit - Configuring I2C](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c)
